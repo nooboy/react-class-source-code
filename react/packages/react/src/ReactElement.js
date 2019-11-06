@@ -202,6 +202,8 @@ export function createElement(type, config, children) {
 
   // Children can be more than one argument, and those are transferred onto
   // the newly allocated props object.
+
+  // 用babel对输入的react代码进行转义，就能轻松理解其含义了
   const childrenLength = arguments.length - 2;
   if (childrenLength === 1) {
     props.children = children;

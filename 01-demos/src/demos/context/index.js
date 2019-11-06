@@ -75,11 +75,13 @@ Child2.contextTypes = {
   a: PropTypes.string,
 }
 
+// 父组件必须通过这种方式来声明，否则子组件无法获取context
 Parent.childContextTypes = {
   value: PropTypes.string,
   a: PropTypes.string,
 }
 
+// 子组件要想使用父组件传入的context，需要通过下面方式进行声明
 Parent2.childContextTypes = {
   a: PropTypes.string,
 }
