@@ -167,6 +167,7 @@ const ReactElement = function(type, key, ref, self, source, owner, props) {
 /**
  * Create and return a new ReactElement of the given type.
  * See https://reactjs.org/docs/react-api.html#createelement
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  */
 export function createElement(type, config, children) {
   let propName;
@@ -286,6 +287,7 @@ export function cloneAndReplaceKey(oldElement, newKey) {
 /**
  * Clone and return a new ReactElement using element as the starting point.
  * See https://reactjs.org/docs/react-api.html#cloneelement
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  */
 export function cloneElement(element, config, children) {
   invariant(

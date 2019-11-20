@@ -344,7 +344,7 @@ ReactRoot.prototype.render = function(
   callback: ?() => mixed,
 ): Work {
   const root = this._internalRoot;
-  const work = new ReactWork();
+  const work = new ReactWork();         // 不重要，可以不看
   callback = callback === undefined ? null : callback;
   if (__DEV__) {
     warnOnInvalidCallback(callback, 'render');
@@ -432,12 +432,13 @@ function isValidContainer(node) {
   );
 }
 
+// 通过判断是否有返回值，决定是否需要调合dom子结点
 function getReactRootElementInContainer(container: any) {
   if (!container) {
     return null;
   }
 
-  if (container.nodeType === DOCUMENT_NODE) {
+  if (container.nodeType === DOCUMENT_NODE) {     // 普通的dom元素
     return container.documentElement;
   } else {
     return container.firstChild;
@@ -446,6 +447,7 @@ function getReactRootElementInContainer(container: any) {
 
 function shouldHydrateDueToLegacyHeuristic(container) {
   const rootElement = getReactRootElementInContainer(container);
+  // ROOT_ATTRIBUTE_NAME 是个常量'data-reactroot' 老版本的在服务端渲染时根节点上会加上该属性
   return !!(
     rootElement &&
     rootElement.nodeType === ELEMENT_NODE &&
@@ -462,13 +464,13 @@ ReactGenericBatching.setBatchingImplementation(
 let warnedAboutHydrateAPI = false;
 
 function legacyCreateRootFromDOMContainer(
-  container: DOMContainer,
-  forceHydrate: boolean,
+  container: DOMContainer,      // 我们传入的挂载结点
+  forceHydrate: boolean,        // render方法传入的是false，而hydrate传入的是true
 ): Root {
   const shouldHydrate =
     forceHydrate || shouldHydrateDueToLegacyHeuristic(container);
   // First clear any existing content.
-  if (!shouldHydrate) {
+  if (!shouldHydrate) {       // 非服务端渲染的情况下为false
     let warned = false;
     let rootSibling;
     while ((rootSibling = container.lastChild)) {
@@ -507,9 +509,10 @@ function legacyCreateRootFromDOMContainer(
 }
 
 function legacyRenderSubtreeIntoContainer(
-  parentComponent: ?React$Component<any, any>,
-  children: ReactNodeList,
-  container: DOMContainer,
+  parentComponent: ?React$Component<any, any>,      // 传的是null
+  children: ReactNodeList,          // ReactElement，如<App/>
+  container: DOMContainer,          // 挂载的结点，如#root
+  // forceHydrate：调用方是render和hydrate，hydrate调用时，是服务端渲染，需要保证客户端和服务端首次渲染的初始值相同，需要调合dom内容，所以传true；render时不需要，所以传false
   forceHydrate: boolean,
   callback: ?Function,
 ) {
@@ -525,9 +528,13 @@ function legacyRenderSubtreeIntoContainer(
 
   // TODO: Without `any` type, Flow says "Property cannot be accessed on any
   // member of intersection type." Whyyyyyy.
-  let root: Root = (container._reactRootContainer: any);
+  // 注：正确情况下，我们自定义的dom标签，第一次渲染时，并没有_reactRootContainer属性的
+  let root: Root = (container._reactRootContainer: any);    // container就是上边传入的 dom根结点
   if (!root) {
     // Initial mount
+    // 注：创建一个React Root
+    // 给根结点container添加一个 _reactRootContainer属性
+    // 示例：obj = Object.a = { a: 1, b: 2 }; 把{a:1,b:2}赋值给Object对象的属性a，同时再赋值给变量obj
     root = container._reactRootContainer = legacyCreateRootFromDOMContainer(
       container,
       forceHydrate,
@@ -541,7 +548,7 @@ function legacyRenderSubtreeIntoContainer(
     }
     // Initial mount should not be batched.
     DOMRenderer.unbatchedUpdates(() => {
-      if (parentComponent != null) {
+      if (parentComponent != null) {                // 始终为null
         root.legacy_renderSubtreeIntoContainer(
           parentComponent,
           children,
@@ -630,21 +637,22 @@ const ReactDOM: Object = {
       null,
       element,
       container,
-      true,
+      true,           // 服务端渲染时，需要保证客户端和服务端首次渲染的初始值相同，需要调合dom内容，所以传true
       callback,
     );
   },
 
   render(
-    element: React$Element<any>,
-    container: DOMContainer,
-    callback: ?Function,
+    element: React$Element<any>,    // 一个ReactElement类，如<App/>
+    container: DOMContainer,        // 要挂载的dom结点，如#root
+    callback: ?Function,            // 应用在渲染结束后会调用callback
   ) {
-    return legacyRenderSubtreeIntoContainer(
+    // 将子树呈现到容器中
+    return legacyRenderSubtreeIntoContainer(      // legacy：遗产、遗留
       null,
       element,
       container,
-      false,
+      false,          // 正常dom渲染时，需要调合dom内容，所以传false
       callback,
     );
   },

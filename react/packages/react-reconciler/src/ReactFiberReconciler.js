@@ -130,7 +130,7 @@ function scheduleRootUpdate(
     }
   }
 
-  const update = createUpdate(expirationTime);
+  const update = createUpdate(expirationTime);              // 用来标识react应用中需要更新的地点
   // Caution: React DevTools currently depends on this property
   // being called "element".
   update.payload = {element};
@@ -147,6 +147,7 @@ function scheduleRootUpdate(
   }
   enqueueUpdate(current, update);
 
+  // 告诉react有任务更新，需要进行调度了。（调度的原因：react16之后提供了任务优先级的概念，有可能在同一时间有多个不同任务，需要根据优先级调用各个任务）
   scheduleWork(current, expirationTime);
   return expirationTime;
 }
@@ -273,14 +274,14 @@ export function createContainer(
 }
 
 export function updateContainer(
-  element: ReactNodeList,
-  container: OpaqueRoot,
-  parentComponent: ?React$Component<any, any>,
+  element: ReactNodeList,       // 子结点
+  container: OpaqueRoot,        // 这个是fiberRoot，并非创建dom时传入的element
+  parentComponent: ?React$Component<any, any>,    // null
   callback: ?Function,
 ): ExpirationTime {
   const current = container.current;
   const currentTime = requestCurrentTime();
-  const expirationTime = computeExpirationForFiber(currentTime, current);
+  const expirationTime = computeExpirationForFiber(currentTime, current);   // 用来进行context model更新
   return updateContainerAtExpirationTime(
     element,
     container,

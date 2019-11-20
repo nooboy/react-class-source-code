@@ -24,3 +24,10 @@ const ReactFiberReconciler = require('./src/ReactFiberReconciler');
 // TODO: decide on the top-level export form.
 // This is hacky but makes it work with both Rollup and Jest.
 module.exports = ReactFiberReconciler.default || ReactFiberReconciler;
+
+
+/*
+  react-reconciler模块功能：(很重要的一个模块)
+    - 主要是解决与平台无关的结点调和相关操作
+    - 任务调度相关操作
+*/

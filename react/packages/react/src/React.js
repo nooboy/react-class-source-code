@@ -8,6 +8,7 @@
 /*
   1. 基于React16+
   2. 参考jokcy
+  3. React顶层API介绍：https://react.docschina.org/docs/react-api.html
 */
 
 import ReactVersion from 'shared/ReactVersion';
@@ -107,7 +108,7 @@ const React = {
   */
 
   lazy,
-  memo,
+  memo,   // 对函数进行性能优化，通过props来判断是否重新渲染当前组件（类似shouldComponentUpdate）
 
   // 这四个都是React提供的组件，其实都只是占位符，都是一个Symbol，在React实际检测到他们的时候会做一些特殊的处理，比如StrictMode和AsyncMode会让他们的子节点对应的Fiber的mode都变成和他们一样的mode
   Fragment: REACT_FRAGMENT_TYPE,
@@ -116,7 +117,10 @@ const React = {
 
   createElement: __DEV__ ? createElementWithValidation : createElement,
   cloneElement: __DEV__ ? cloneElementWithValidation : cloneElement,          // 克隆一个 ReactElement
-  createFactory: __DEV__ ? createFactoryWithValidation : createFactory,       // 专门用来创建某一类 ReactElement 的工厂
+
+  // 专门用来创建某一类 ReactElement 的工厂，React16.8.6提示已废弃，建议使用 JSX 或直接调用 React.createElement() 来替代它
+  createFactory: __DEV__ ? createFactoryWithValidation : createFactory,
+
   isValidElement: isValidElement,
 
   version: ReactVersion,

@@ -327,6 +327,7 @@ function mapIntoWithKeyPrefixInternal(children, array, prefix, func, context) {
  * Maps children that are typically specified as `props.children`.
  *
  * See https://reactjs.org/docs/react-api.html#reactchildrenmap
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  *
  * The provided mapFunction(child, key, index) will be called for each
  * leaf child.
@@ -350,6 +351,7 @@ function mapChildren(children, func, context) {
  * `props.children`.
  *
  * See https://reactjs.org/docs/react-api.html#reactchildrencount
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  *
  * @param {?*} children Children tree container.
  * @return {number} The number of children.
@@ -363,6 +365,7 @@ function countChildren(children) {
  * return an array with appropriately re-keyed children.
  *
  * See https://reactjs.org/docs/react-api.html#reactchildrentoarray
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  */
 function toArray(children) {
   const result = [];
@@ -375,6 +378,7 @@ function toArray(children) {
  * is only one child in the collection.
  *
  * See https://reactjs.org/docs/react-api.html#reactchildrenonly
+ * See 中文网：https://react.docschina.org/docs/react-api.html
  *
  * The current implementation of this function assumes that a single child gets
  * passed without a wrapper, but the purpose of this helper function is to

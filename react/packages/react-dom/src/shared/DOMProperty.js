@@ -61,7 +61,7 @@ export const ATTRIBUTE_NAME_CHAR =
   ATTRIBUTE_NAME_START_CHAR + '\\-.0-9\\u00B7\\u0300-\\u036F\\u203F-\\u2040';
 
 export const ID_ATTRIBUTE_NAME = 'data-reactid';
-export const ROOT_ATTRIBUTE_NAME = 'data-reactroot';
+export const ROOT_ATTRIBUTE_NAME = 'data-reactroot';      // 老版本的在服务端渲染时会会在root结点的第一个子结点上加上该属性，用来标识是有服务端渲染的
 export const VALID_ATTRIBUTE_NAME_REGEX = new RegExp(
   '^[' + ATTRIBUTE_NAME_START_CHAR + '][' + ATTRIBUTE_NAME_CHAR + ']*$',
 );
